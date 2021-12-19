@@ -16,7 +16,7 @@ If you are using Ansible, this playbook can help you accomplish that for all Lin
 $ ansible-playbook log4j_mitigate.yml
 ```
   
-### Remove all JndiClasses form found jar files
+### Remove all JndiClasses from found jar files
 
 ```
 $ ansible-playbook log4j_mitigate.yml -e "remove_class=true"
