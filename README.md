@@ -1,3 +1,3 @@
-# Ansible log4j mitigate JndiLookup.class
+# Ansible playbook to mitigate log4j JndiLookup.class
 
 Remove JndiLookup.class from all vulnerable '*.jar' files with Ansible.
