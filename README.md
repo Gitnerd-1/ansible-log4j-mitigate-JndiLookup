@@ -13,12 +13,12 @@ If you are using Ansible, this playbook can help you accomplish that for all Lin
 ### List all jar files containing vulnerable JndiLookup.class
 
 ```
-$ ansible-playbook log4j-mitigate.yml
+$ ansible-playbook log4j_mitigate.yml
 ```
   
 ### Remove all JndiClasses form found jar files
 
 ```
-$ ansible-playbook log4j-mitigate.yml -e "remove_class=true"
+$ ansible-playbook log4j_mitigate.yml -e "remove_class=true"
 ``` 
   
