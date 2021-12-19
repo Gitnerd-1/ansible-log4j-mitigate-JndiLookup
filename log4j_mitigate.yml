@@ -1,16 +1,15 @@
 ---
 # Mitigate log4j vuln by removing class from jar.
 #
-
 - name: Log4j JndiLookup.class mitigation
-  hosts: ansible_hosts
+  hosts: all
   gather_facts: no
   become: true
   become_user: root
 
   tasks:
     - name: find *.jar
-      shell:
+      ansible.builtin.shell:
         cmd: find / -fstype nfs -prune -o -fstype proc -prune -o -fstype cifs -prune -o -type f ! -name '*2.16' -name '*.jar' -exec sh -c 'zipinfo -1 {} | grep JndiLookup.class >/dev/null  && echo {}' \;
       register: find_result
       changed_when: False
@@ -21,7 +20,7 @@
         msg: files {{ find_result.stdout }}
 
     - name: Check JndiLookup.class in found files
-      shell:
+      ansible.builtin.shell:
         cmd: zipinfo -1 {{ class_item }} | grep JndiLookup.class
       loop: "{{ find_result.stdout_lines }}"
       loop_control:
@@ -30,15 +29,15 @@
       changed_when: False
       failed_when: class_result.rc !=1 and class_result.rc !=0
 
-    - name: List all JndiLookup classes - Evidence
+    - name: List all JndiLookup classes
       debug:
         msg: VULN Found "{{ item.stdout }}"
       loop: "{{ class_result.results }}"
       when: class_result is search("/JndiLookup.class")
 
     - name: Remove JndiLookup.class from vulnerable jar
-      shell:
-        cmd: echo zip -q -d  {{ class_item }} org/apache/logging/log4j/core/lookup/JndiLookup.class
+      ansible.builtin.shell:
+        cmd: zip -q -d  {{ class_item }} org/apache/logging/log4j/core/lookup/JndiLookup.class
       loop: "{{ find_result.stdout_lines }}"
       loop_control:
         loop_var: class_item
