@@ -10,7 +10,7 @@
   tasks:
     - name: find *.jar
       ansible.builtin.shell:
-        cmd: find / -fstype nfs -prune -o -fstype proc -prune -o -fstype cifs -prune -o -type f ! -name '*2.16' -name '*.jar' -exec sh -c 'zipinfo -1 {} | grep JndiLookup.class >/dev/null  && echo {}' \;
+        cmd: find / -fstype nfs -prune -o -fstype proc -prune -o -fstype cifs -prune -o -type f ! -name '*2.16*.jar' -name '*.jar' -exec sh -c 'zipinfo -1 {} | grep JndiLookup.class >/dev/null  && echo {}' \;
       register: find_result
       changed_when: False
       failed_when: find_result.rc !=1 and find_result.rc !=0
