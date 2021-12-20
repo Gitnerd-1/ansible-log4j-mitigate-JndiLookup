@@ -27,7 +27,6 @@
         loop_var: class_item
       register: class_result
       changed_when: False
-      failed_when: class_result.rc !=1 and class_result.rc !=0
 
     - name: List all JndiLookup classes
       debug:
